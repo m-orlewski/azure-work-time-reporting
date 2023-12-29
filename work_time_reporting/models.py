@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+class WorkTime(models.Model):
+    date = models.DateTimeField('date')
+    hours = models.FloatField(default=0)
+
+    def __str__(self):
+        return f'{self.date} - {self.hours} hours'
