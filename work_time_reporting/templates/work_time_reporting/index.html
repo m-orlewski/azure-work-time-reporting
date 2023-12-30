@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Work Time</title>
+</head>
+<body>
+    <h1>Report Work Time</h1>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <div>
+        <h2>Add Work Time</h2>
+        <form method="post" action="{% url 'add_work_time' %}">
+            <label>Date:</label>
+            <input type="date" name="date" required>
+            <label>Work Time:</label>
+            <input type="number" step="0.1" name="hours" required>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <div>
+        <h2>Generate Summary</h2>
+        <form method="get" action="{% url 'generate_summary' %}">
+            <label>Start date:</label>
+            <input type="date" name="start_date">
+            <label>End date:</label>
+            <input type="date" name="end_date">
+            <button type="submit">Show summary</button>
+        </form>
+
+        {% if date_range %}
+            <p>Summary for date range: {{ date_range }}</p>
+        {% endif %}
+
+        {% if total_hours %}
+            <p>Hours worked: {{ total_hours }}</p>
+        {% endif %}
+
+        {% if entries %}
+            <ul>
+                {% for entry in entries %}
+                    <li>{{ entry.date }} - {{ entry.hours }} hours</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
