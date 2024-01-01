@@ -50,4 +50,5 @@ def generate_summary(request):
         'date_range': date_range,
         'total_hours': total_hours
     }
+
     return render(request, 'work_time_reporting/index.html', context)
