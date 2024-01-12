@@ -8,6 +8,12 @@
 <body>
     <h1>Report Work Time</h1>
 
+    {% if user.is_authenticated %}
+        <p>Username: {{ user.username}}<form method="post" action="{% url 'logout' %}"><button type="submit">Logout</button></form></p>
+    {% else %}
+        <form method="post" action="{% url 'login' %}"><button type="submit">Log in</button></form>
+    {% endif %}
+
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}

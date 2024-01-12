@@ -1,14 +1,42 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login, logout
 
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
+
+def is_superuser(user):
+    return user.is_authenticated and user.is_superuser
 
 def home(request):
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is None:
+            return render(request, 'work_time_reporting/login.html', {'message': 'Invalid username or password'})
+    
+        login(request, user)
+        return redirect('home')
+    else:
+        return render(request, 'work_time_reporting/login.html')
+    
+@csrf_exempt
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+
+
+@csrf_exempt
+@user_passes_test(is_superuser, login_url='/login')
 def add_work_time(request):
     try:
         date = request.POST['date']
@@ -26,6 +54,7 @@ def add_work_time(request):
             'message': f"Entry added: ({date}: {hours})"
         })
 
+@user_passes_test(is_superuser, login_url='/login')
 def generate_summary(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')

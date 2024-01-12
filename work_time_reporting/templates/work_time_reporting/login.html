@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Work Time</title>
+</head>
+<body>
+    <h1>Report Work Time</h1>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <div>
+        <h2>Log in</h2>
+        <form method="post" action="{% url 'login' %}">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+            <br>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+            <br>
+            <button type="submit">Sign in</button>
+        </form>
+    </div>
+</body>
+</html>
