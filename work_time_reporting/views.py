@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
 
+import logging
+logger = logging.getLogger(__name__)
+
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
@@ -11,6 +14,7 @@ def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 def home(request):
+    logger.debug('rendering home page')
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
