@@ -1,4 +1,5 @@
 import os
+import applicationinsights
 
 from .settings import *  # noqa
 from .settings import BASE_DIR
@@ -9,12 +10,8 @@ ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.env
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 DEBUG = False
 
-# Get application insights instrumentation key
-APP_INSIGHTS_INSTRUMENTATION_KEY = os.environ['APP_INSIGHTS_INSTRUMENTATION_KEY']
-
 # WhiteNoise configuration
 MIDDLEWARE = [
-    'applicationinsights.django.middleware.ApplicationInsightsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -23,6 +20,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'applicationinsights.django.middleware.ApplicationInsightsMiddleware',
 ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -41,4 +39,27 @@ DATABASES = {
         'USER': conn_str_params['user'],
         'PASSWORD': conn_str_params['password'],
     }
+}
+
+# Initialize application insights
+APPLICATION_INSIGHTS = {
+    'ikey': os.environ['APP_INSIGHTS_INSTRUMENTATION_KEY'],
+}
+applicationinsights.initialize(**APPLICATION_INSIGHTS)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'applicationinsights': {
+            'class': 'applicationinsights.logging.ApplicationInsightsHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['applicationinsights'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }

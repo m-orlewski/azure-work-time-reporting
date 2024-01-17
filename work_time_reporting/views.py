@@ -3,26 +3,35 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
+import logging
+from applicationinsights import telemetry
 
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
+
+logger = logging.getLogger(__name__)
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 def home(request):
+    logger.info("INFO - home page")
+    telemetry.track_trace('Rendering home page', severity=logging.INFO)
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
 def login_view(request):
+    logger.info("INFO - login page")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
 
         if user is None:
+            logger.info("INFO - login failed")
             return render(request, 'work_time_reporting/login.html', {'message': 'Invalid username or password'})
     
+        logger.info("INFO - login successful")
         login(request, user)
         return redirect('home')
     else:
@@ -30,6 +39,7 @@ def login_view(request):
     
 @csrf_exempt
 def logout_view(request):
+    logger.info("INFO - logout page")
     logout(request)
     return redirect('home')
 
@@ -38,6 +48,7 @@ def logout_view(request):
 @csrf_exempt
 @user_passes_test(is_superuser, login_url='/login')
 def add_work_time(request):
+    logger.info("INFO - add_work_time page")
     try:
         date = request.POST['date']
         hours = request.POST['hours']
@@ -56,6 +67,7 @@ def add_work_time(request):
 
 @user_passes_test(is_superuser, login_url='/login')
 def generate_summary(request):
+    logger.info("INFO - generate_summary page")
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     
