@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
 import logging
-import applicationinsights
+from applicationinsights import telemetry
 
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
@@ -16,7 +16,7 @@ def is_superuser(user):
 
 def home(request):
     logger.info("INFO - home page")
-    applicationinsights.track_trace('Rendering home page view', severity=logging.INFO)
+    telemetry.track_trace('Rendering home page', severity=logging.INFO)
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
