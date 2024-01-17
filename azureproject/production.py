@@ -9,7 +9,7 @@ ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.env
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 DEBUG = False
 
-# Get application insights key
+# Get application insights instrumentation key
 APP_INSIGHTS_INSTRUMENTATION_KEY = os.environ['APP_INSIGHTS_INSTRUMENTATION_KEY']
 
 # WhiteNoise configuration
