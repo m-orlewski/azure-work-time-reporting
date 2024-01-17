@@ -9,9 +9,18 @@ ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.env
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 DEBUG = False
 
+APP_INSIGHTS_INSTRUMENTATION_KEY='facca527-f17a-49e4-87fd-12bcff3c5b26'
+
+APPLICATION_INSIGHTS = {
+        'instrumentation_key': APP_INSIGHTS_INSTRUMENTATION_KEY,
+    }
+
+INSTALLED_APPS = INSTALLED_APPS + ['applicationinsights']
+
 # WhiteNoise configuration
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'applicationinsights.middleware.AppInsightsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -20,6 +29,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+APPLICATION_INSIGHTS = {
+        'instrumentation_key': APP_INSIGHTS_INSTRUMENTATION_KEY,
+    }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
