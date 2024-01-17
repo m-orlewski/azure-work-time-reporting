@@ -7,15 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 def home(request):
-    logger.debug('DEBUG INFO: home page rendering')
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
