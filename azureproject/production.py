@@ -1,5 +1,4 @@
 import os
-import sys
 
 from .settings import *  # noqa
 from .settings import BASE_DIR
@@ -40,30 +39,4 @@ DATABASES = {
     }
 }
 
-# LOGGING["root"]["level"] = 'INFO'
-
-sampler = 'opencensus.trace.samplers.ProbabilitySampler(rate=1.0)'
-OPENCENSUS = {
-    'TRACE': {
-        'SAMPLER': sampler,
-        'EXPORTER': 'opencensus.ext.azure.trace_exporter.AzureExporter(connection_string="InstrumentationKey=bba4e20f-fd75-471e-9ad2-68419df0b1cc;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://germanywestcentral.livediagnostics.monitor.azure.com/")',
-    }
-}
-
-LOGGING = {
-    "handlers": {
-        "azure": {
-            "level": "DEBUG",
-            "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
-            "connection_string": "<appinsights-connection-string>",
-        },
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "stream": sys.stdout,
-        },
-      },
-    "loggers": {
-        "logger": {"handlers": ["azure", "console"]},
-    },
-}
+LOGGING["root"]["level"] = 'INFO'
