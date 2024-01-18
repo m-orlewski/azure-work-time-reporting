@@ -7,8 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
+from opentelemetry.instrumentation.django import DjangoInstrumentor
 import logging
 
+DjangoInstrumentor().instrument()
 logger = logging.getLogger(__name__)
 
 def is_superuser(user):
