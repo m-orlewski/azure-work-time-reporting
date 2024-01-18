@@ -38,3 +38,5 @@ DATABASES = {
         'PASSWORD': conn_str_params['password'],
     }
 }
+
+LOGGING["root"]["level"] = 'INFO'

@@ -7,14 +7,20 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 def home(request):
+    logger.info('INFO - rendering home page')
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt
 def login_view(request):
+    logger.info('INFO - rendering login page')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -30,6 +36,7 @@ def login_view(request):
     
 @csrf_exempt
 def logout_view(request):
+    logger.info('INFO - rendering logout page')
     logout(request)
     return redirect('home')
 
@@ -38,6 +45,7 @@ def logout_view(request):
 @csrf_exempt
 @user_passes_test(is_superuser, login_url='/login')
 def add_work_time(request):
+    logger.info('INFO - rendering add_work_time page')
     try:
         date = request.POST['date']
         hours = request.POST['hours']
@@ -56,6 +64,7 @@ def add_work_time(request):
 
 @user_passes_test(is_superuser, login_url='/login')
 def generate_summary(request):
+    logger.info('INFO - rendering generate_summary page')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     
