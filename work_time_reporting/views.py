@@ -7,10 +7,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
+import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+
+logger = logging.getLogger('azure')
+logger.addHandler(AzureLogHandler())
+
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 def home(request):
+    logger.info("Rendering home page")
     return render(request, 'work_time_reporting/index.html')
 
 @csrf_exempt

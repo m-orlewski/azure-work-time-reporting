@@ -1,4 +1,5 @@
 import os
+import sys
 
 from .settings import *  # noqa
 from .settings import BASE_DIR
@@ -37,4 +38,24 @@ DATABASES = {
         'USER': conn_str_params['user'],
         'PASSWORD': conn_str_params['password'],
     }
+}
+
+APPLICATIONINSIGHTS_CONNECTION_STRING=os.environ['APPLICATIONINSIGHTS_CONNECTION_STRING']
+
+LOGGING = {
+    "handlers": {
+        "azure": {
+            "level": "DEBUG",
+            "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+            "connection_string": APPLICATIONINSIGHTS_CONNECTION_STRING,
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,
+        },
+      },
+    "loggers": {
+        "logger_name": {"handlers": ["azure", "console"]},
+    },
 }
