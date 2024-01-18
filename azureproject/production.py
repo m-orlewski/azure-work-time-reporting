@@ -46,3 +46,9 @@ DATABASES = {
         'PASSWORD': conn_str_params['password'],
     }
 }
+
+from opentelemetry import trace
+tracer = trace.get_tracer(__name__)
+
+with tracer.start_as_current_span("test"):
+    print("Settings loaded")
