@@ -3,6 +3,14 @@ import os
 from .settings import *  # noqa
 from .settings import BASE_DIR
 
+from azure.monitor.opentelemetry import configure_azure_monitor
+
+APP_INSIGHTS_CONN_STRING = os.environ['APP_INSIGHTS_CONN_STRING']
+
+configure_azure_monitor(
+    connection_string=APP_INSIGHTS_CONN_STRING,
+)
+
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
