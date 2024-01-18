@@ -12,6 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def is_superuser(user):
+    logger.debug('DEBUG - checking if user is superuser')
     return user.is_authenticated and user.is_superuser
 
 def home(request):
