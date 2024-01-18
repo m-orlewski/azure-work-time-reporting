@@ -9,7 +9,7 @@ from work_time_reporting.models import WorkTime
 
 import logging
 
-logger = logging.getLogger('logger')
+logger = logging.getLogger(__name__)
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
