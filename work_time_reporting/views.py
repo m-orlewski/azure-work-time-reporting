@@ -27,11 +27,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is None:
+            logger.info('INFO - login successful')
             return render(request, 'work_time_reporting/login.html', {'message': 'Invalid username or password'})
     
         login(request, user)
         return redirect('home')
     else:
+        logger.info('INFO - login failed')
         return render(request, 'work_time_reporting/login.html')
     
 @csrf_exempt
@@ -50,6 +52,7 @@ def add_work_time(request):
         date = request.POST['date']
         hours = request.POST['hours']
     except(KeyError):
+        logger.error('ERROR - add_work_time endpoint: date/hours worked not found')
         return render(request, 'work_time_reporting/index.html', {
             'message': "You must include: date, hours worked",
         })
