@@ -8,8 +8,11 @@ from django.db.models import Sum
 from work_time_reporting.models import WorkTime
 
 import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('logger')
+logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=bba4e20f-fd75-471e-9ad2-68419df0b1cc;IngestionEndpoint=https://germanywestcentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://germanywestcentral.livediagnostics.monitor.azure.com/'))
+logger.setLevel(logging.INFO)
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
