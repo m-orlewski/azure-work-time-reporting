@@ -27,13 +27,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
 
         if user is None:
-            logger.info('INFO - login successful')
+            logger.info('INFO - login failed')
             return render(request, 'work_time_reporting/login.html', {'message': 'Invalid username or password'})
-    
+
+        logger.info('INFO - login successful')
         login(request, user)
         return redirect('home')
     else:
-        logger.info('INFO - login failed')
         return render(request, 'work_time_reporting/login.html')
     
 @csrf_exempt
